@@ -226,7 +226,7 @@ export default {
       if (sort.value === "name") {
         return _.orderBy(list.value, "name", "asc");
       } else if (sort.value === "date") {
-        return _.orderBy(list.value, "static_fire_date_utc", "asc");
+        return _.orderBy(list.value, "static_fire_date_utc", "desc");
       }
       return list.value;
     });
