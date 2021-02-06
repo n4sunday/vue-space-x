@@ -218,7 +218,6 @@ export default {
   setup() {
     onMounted(async () => {
       let res = await axios.get("https://api.spacexdata.com/v4/launches");
-      console.log("MOUNT", res.data);
       list.value = res.data;
     });
 
@@ -240,8 +239,6 @@ export default {
     const sort = ref(false);
 
     const openModal = async (item) => {
-      console.log("ITEM", item);
-
       visible.value = true;
       select.value = item;
       let resPromise = [];
