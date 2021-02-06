@@ -47,7 +47,7 @@
           </span>
           <span v-else>-</span>
         </td>
-        <td><img :src="item.links.patch.small" alt="" class="h-20 w-20" /></td>
+        <td class="h-20 w-20"><img v-if="item.links.patch.small" :src="item.links.patch.small" alt="no image" class="h-20 w-20" /></td>
         <td>{{ item.crew.length }}</td>
         <td>
           <span v-if="item.success" class="text-green-400">Release</span>
@@ -88,7 +88,7 @@
       >
         <div class="bg-white px-4 pt-5 pb-4 sm:p-4 sm:pb-4">
           <div class="flex items-center w-full justify-center  mb-5">
-            <img :src="select.links.patch.small" alt="" class="h-40 w-40" />
+            <img v-if="select.links.patch.small" :src="select.links.patch.small" alt="no image" class="h-40 w-40" />
           </div>
 
           <div class="mb-2">
