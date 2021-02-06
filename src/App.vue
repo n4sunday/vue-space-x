@@ -4,15 +4,15 @@
   >
     <div class="flex-auto flex space-x-3">
       <button
-        class="w-32 h-10 flex items-center justify-center border-gray-200"
+        class="w-32 h-10 flex items-center justify-center border border-gray-200"
         :class="sort === 'name' && 'bg-black  text-white'"
         type="submit"
-        @click="sort = 'name'"
+        @click="sort === 'name' ? (sort = 'false') : (sort = 'name')"
       >
         Name
       </button>
       <button
-        @click="sort = 'date'"
+        @click="sort === 'date' ? (sort = 'false') : (sort = 'date')"
         :class="sort === 'date' && 'bg-black  text-white'"
         class="w-32 flex items-center justify-center border border-gray-200"
         type="button"
