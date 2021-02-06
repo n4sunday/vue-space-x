@@ -1,17 +1,38 @@
 <template>
+  <div
+    class="flex items-center justify-center space-x-3 mb-3 text-sm font-semibold uppercase w-full"
+  >
+    <div class="flex-auto flex space-x-3">
+      <button
+        class="w-32 h-10 flex items-center justify-center bg-black text-white"
+        type="submit"
+        @click="sort = 'name'"
+      >
+        Name
+      </button>
+      <button
+        @click="sort = 'date'"
+        class="w-32 flex items-center justify-center border border-gray-200"
+        type="button"
+      >
+        Static Fire Date
+      </button>
+    </div>
+  </div>
+
   <table class="min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-50">
       <tr>
-        <th>Name</th>
-        <th>Static Fire Date</th>
-        <th>Image</th>
-        <th>Crews</th>
-        <th>Success</th>
+        <th class="px-6 py-3">Name</th>
+        <th class="px-6 py-3">Static Fire Date</th>
+        <th class="px-6 py-3">Image</th>
+        <th class="px-6 py-3">Crews</th>
+        <th class="px-6 py-3">Success</th>
         <th></th>
       </tr>
     </thead>
     <tbody
-      v-for="(item, index) in list"
+      v-for="(item, index) in sortData"
       :key="index"
       class="bg-white divide-y divide-gray-200"
     >
@@ -128,8 +149,11 @@
             </div>
             <div>
               <span class="font-bold">Diameter : </span>
-              <span class="mr-1">{{ rocket.diameter.feet }} Feet</span>
-              <span>{{ rocket.diameter.meters }} Meters</span>
+              <span>{{ rocket.diameter.meters }} meters</span>
+            </div>
+            <div>
+              <span class="font-bold">Mass : </span>
+              <span>{{ rocket.mass.kg }} kg</span>
             </div>
             <div>
               <span class="font-bold">Country : </span>
@@ -181,9 +205,10 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 import moment from "moment";
+import _ from "lodash";
 
 export default {
   name: "App",
@@ -195,12 +220,22 @@ export default {
       list.value = res.data;
     });
 
+    const sortData = computed(() => {
+      if (sort.value === "name") {
+        return _.orderBy(list.value, "name", "asc");
+      } else if (sort.value === "date") {
+        return _.orderBy(list.value, "static_fire_date_utc", "asc");
+      }
+      return list.value;
+    });
+
     const list = ref([]);
     const visible = ref(false);
     const select = ref(false);
     const crews = ref([]);
     const launchpad = ref(false);
     const rocket = ref(false);
+    const sort = ref(false);
 
     const openModal = async (item) => {
       console.log("ITEM", item);
@@ -212,14 +247,11 @@ export default {
         resPromise.push(fetchMember(item));
       });
       let res = await Promise.all(resPromise);
-      console.log("RES", res);
       crews.value = res;
       let resLaunchpad = await fetchLaunchpad(item.launchpad);
-      console.log("resLaunchpad", resLaunchpad);
       launchpad.value = resLaunchpad;
       let resRocket = await fetchRocket(item.rocket);
       rocket.value = resRocket;
-      console.log("resRocket", resRocket);
     };
 
     const fetchMember = async (id) => {
@@ -253,6 +285,8 @@ export default {
       crews,
       launchpad,
       rocket,
+      sortData,
+      sort,
     };
   },
 };
