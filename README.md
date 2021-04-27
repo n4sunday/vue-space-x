@@ -1,4 +1,4 @@
-# vue-project
+# VUE3 + TAILWIND REDIUS TEST
 
 ## Project setup
 ```
